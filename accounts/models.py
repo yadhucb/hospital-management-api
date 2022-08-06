@@ -2,7 +2,7 @@ from django.db import models
 
 from django.db import models
 from django.contrib.auth.models import (
-    BaseUserManager, AbstractBaseUser
+    BaseUserManager, AbstractBaseUser, PermissionsMixin
 )
 
 class UserManager(BaseUserManager):
@@ -37,15 +37,15 @@ class UserManager(BaseUserManager):
         user.is_nurse = False
         user.is_pharmacist = False
         user.is_lab_staff = False
-        user.staff = True
-        user.admin = True
-        user.is_superadmin = True
+        user.is_admin = True
         user.is_active = True
+        user.is_staff = True
+        user.is_superadmin = True
         user.is_verified = True
         user.save(using=self._db)
         return user
 
-class User(AbstractBaseUser):
+class User(AbstractBaseUser, PermissionsMixin):
 
     username  =models.CharField(max_length=55, unique=True)
     email = models.EmailField(max_length=55,null=True, blank=True, unique=True)
